@@ -23,7 +23,6 @@ import java.net.URI;
 @AllArgsConstructor
 public class AuthController {
 
-    private AuthenticationManager authenticationManager;
     private PersonDetailsService personDetailsService;
     private JwtUtil jwtUtil;
     private PasswordEncoder passwordEncoder;
@@ -40,11 +39,6 @@ public class AuthController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody @Validated AuthenticationRequest authenticationRequest) throws BadCredentialsException {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-        } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Incorrect username or password" + e);
-        }
 
         final UserDetails userDetails = personDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
